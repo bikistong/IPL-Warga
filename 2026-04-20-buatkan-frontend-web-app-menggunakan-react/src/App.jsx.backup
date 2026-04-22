@@ -4,13 +4,17 @@ import PaymentTable from "./components/PaymentTable";
 import StatusBadge from "./components/StatusBadge";
 import UploadForm from "./components/UploadForm";
 import { initialBankTransactions, initialBills, initialPayments, residents } from "./data/dummyData";
-import { useSheetData } from "./hooks/useSheetData";
 
 const currency = new Intl.NumberFormat("id-ID", {
   style: "currency",
   currency: "IDR",
   maximumFractionDigits: 0,
 });
+
+const residentOptions = residents.map((resident) => ({
+  value: resident.id,
+  label: `${resident.name} - ${resident.houseNumber}`,
+}));
 
 const initialState = {
   bills: initialBills,
@@ -102,6 +106,10 @@ function reducer(state, action) {
   }
 }
 
+function getResidentById(residentId) {
+  return residents.find((resident) => resident.id === residentId);
+}
+
 function parseCsvFile(file) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -165,38 +173,12 @@ function StaticQrCard() {
     </div>
   );
 }
-
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [activeRole, setActiveRole] = useState("user");
-  
-  // Fetch residents dari Google Sheets
-  const { data: sheetResidents, loading: residentsLoading } = useSheetData('getResidents');
-  console.log('DEBUG - sheetResidents:', sheetResidents, 'loading:', residentsLoading);
-
-  // Transform data dari Sheets ke format yang dipakai app
-  const residentList = residentsLoading
-    ? residents
-    : sheetResidents.map(r => ({
-        id: r.id,
-        name: r.name,
-        houseNumber: r.house_number
-      }));
-
-  // Build resident options untuk dropdown
-  const residentOptions = residentList.map((resident) => ({
-    value: resident.id,
-    label: `${resident.name} - ${resident.houseNumber}`,
-  }));
-
-  const [selectedResidentId, setSelectedResidentId] = useState(residentList[0]?.id || residents[0].id);
+  const [selectedResidentId, setSelectedResidentId] = useState(residents[0].id);
   const [search, setSearch] = useState("");
   const [assignmentMap, setAssignmentMap] = useState({});
-
-  // Helper function untuk cari resident by ID
-  const getResidentById = (residentId) => {
-    return residentList.find((resident) => resident.id === residentId);
-  };
 
   const selectedResident = getResidentById(selectedResidentId);
   const residentBills = state.bills.filter((bill) => bill.residentId === selectedResidentId);
