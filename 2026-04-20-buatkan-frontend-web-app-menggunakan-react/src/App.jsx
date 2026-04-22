@@ -139,55 +139,40 @@ function parseCsvFile(file) {
 }
 
 function StaticQrCard() {
-  const cells = [
-    "1111111000101111111",
-    "1000001011101000001",
-    "1011101010101011101",
-    "1011101000101011101",
-    "1011101011101011101",
-    "1000001000001000001",
-    "1111111010101111111",
-    "0000000011010000000",
-    "1100111000101010110",
-    "0011000111000011001",
-    "1110001010111110100",
-    "0111010111001001110",
-    "1010111000100010111",
-    "0000000010110100100",
-    "1111111011001110001",
-    "1000001000110001110",
-    "1011101011000101011",
-    "1000101001110010010",
-    "1111111010011111001",
-  ];
-
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+      <div className="flex flex-col gap-4">
         <div>
-          <p className="text-lg font-semibold text-slate-900">Pembayaran QRIS</p>
+          <p className="text-lg font-semibold text-slate-900">Pembayaran Transfer Bank</p>
           <p className="mt-1 max-w-md text-sm text-slate-500">
-            Gunakan QR statis berikut untuk simulasi pembayaran IPL. Setelah membayar, lanjutkan ke form konfirmasi.
+            Silakan lakukan pembayaran melalui transfer ke rekening berikut, lalu upload bukti pembayaran.
           </p>
-          <div className="mt-4 rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            Nama merchant: Kas IPL Warga
+        </div>
+
+        <div className="mt-4 space-y-3">
+          <div className="rounded-2xl bg-slate-50 px-4 py-3 flex justify-between">
+            <span className="text-slate-500">Bank</span>
+            <span className="font-semibold text-slate-900">BCA</span>
+          </div>
+
+          <div className="rounded-2xl bg-slate-50 px-4 py-3 flex justify-between">
+            <span className="text-slate-500">No. Rekening</span>
+            <span className="font-semibold text-slate-900">1234567890</span>
+          </div>
+
+          <div className="rounded-2xl bg-slate-50 px-4 py-3 flex justify-between">
+            <span className="text-slate-500">Atas Nama</span>
+            <span className="font-semibold text-slate-900">Kas IPL Warga</span>
           </div>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-          <div className="grid grid-cols-[repeat(19,minmax(0,1fr))] gap-1">
-            {cells.join("").split("").map((cell, index) => (
-              <div
-                key={index}
-                className={`h-2.5 w-2.5 rounded-[2px] ${cell === "1" ? "bg-slate-900" : "bg-white"}`}
-              />
-            ))}
-          </div>
+
+        <div className="mt-3 rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          Pastikan nominal transfer sesuai tagihan ya 👍
         </div>
       </div>
     </div>
   );
 }
-
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [activeRole, setActiveRole] = useState("user");
@@ -281,7 +266,7 @@ function App() {
                 Sistem Pembayaran IPL
               </p>
               <h1 className="mt-2 text-3xl font-bold text-slate-900 md:text-4xl">
-                Dashboard iuran warga berbasis React + Tailwind
+                Dashboard IPL Warga Mandalika
               </h1>
               <p className="mt-3 max-w-2xl text-sm text-slate-500 md:text-base">
                 Simulasi frontend untuk alur konfirmasi pembayaran warga dan verifikasi admin tanpa backend.
